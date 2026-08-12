@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const projects = [
   {
     title: "Aura Analytics",
@@ -103,9 +105,12 @@ export default function Projects() {
         </div>
 
         <div className="flex justify-center mt-8">
-          <button className="neu-raised neu-interactive px-10 py-4 rounded-full text-primary font-bold text-lg flex items-center gap-2 transition-all">
+          <Link
+            to="/projects"
+            className="neu-raised neu-interactive px-10 py-4 rounded-full text-primary font-bold text-lg flex items-center gap-2 transition-all"
+          >
             View All Projects <span className="material-symbols-outlined">arrow_forward</span>
-          </button>
+          </Link>
         </div>
       </div>
     </section>

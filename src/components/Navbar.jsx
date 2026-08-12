@@ -20,7 +20,7 @@ export default function Navbar({ activeSection }) {
               activeSection === link.target ? "active-link" : ""
             }`}
             data-target={link.target}
-            href={`#${link.target}`}
+            href={`/#${link.target}`}
           >
             {link.label}
           </a>

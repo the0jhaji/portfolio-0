@@ -72,3 +72,19 @@ body {
   color: #3525cd;
   font-weight: 700;
 }
+
+.neumorphic-convex {
+  box-shadow: -8px -8px 20px #ffffff, 8px 8px 20px #bebebe;
+}
+
+.neumorphic-concave {
+  box-shadow: inset -8px -8px 20px #ffffff, inset 8px 8px 20px #bebebe;
+}
+
+.neumorphic-convex-sm {
+  box-shadow: -4px -4px 10px #ffffff, 4px 4px 10px #bebebe;
+}
+
+.neumorphic-concave-sm {
+  box-shadow: inset -4px -4px 10px #ffffff, inset 4px 4px 10px #bebebe;
+}
