@@ -37,9 +37,12 @@ export default function Hero() {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <button className="neu-raised neu-interactive px-8 py-3 rounded-full text-primary font-bold">
+          <a
+            className="neu-raised neu-interactive px-8 py-3 rounded-full text-primary font-bold"
+            href="#projects"
+          >
             View Projects
-          </button>
+          </a>
           <a
             className="neu-recessed neu-interactive px-8 py-3 rounded-full text-on-surface font-medium flex items-center gap-2"
             href="#contact"

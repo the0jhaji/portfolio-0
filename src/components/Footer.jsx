@@ -13,7 +13,7 @@ export default function Footer() {
           <a className="text-secondary hover:text-primary transition-colors font-medium" href="#about">
             About
           </a>
-          <a className="text-secondary hover:text-primary transition-colors font-medium" href="#projects">
+          <a className="text-secondary hover:text-primary transition-colors font-medium" href="/#projects">
             Projects
           </a>
         </div>
