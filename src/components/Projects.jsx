@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 const projects = [
   {
-    title: "Aura Analytics",
-    tag: "Web Dev",
+    title: "ASTRA",
+    tag: "Web Dev + ML",
     tagColor: "text-primary bg-primary/10",
     description:
-      "A high-fidelity dashboard interface for modern web applications featuring real-time data visualizations.",
+      "ASTRA AI is an offline AI-powered astronaut assistance system that uses computer vision to monitor space-station activities, detect astronauts, tools, and equipment, recognize task sequences, and identify safety hazards in real time. It helps validate procedures, detect missed steps or dangerous situations, and provide instant voice alerts without relying on cloud connectivity.",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBQlqyINeahuNhTndIbWMNiUs0OfhuP8bqXlvqTpvn9J8t_tCao8fb7n-51bD3DYiDblKqvbaMUafGu8zlOhVYFgER_p1gVRgfPL2eJiIgjsaDX_HV9qW58tqh4t30jyxRW3AMIb1T_CFYV4_mkabUr67ynAGWmoBgXchz0tf3w2-vswExVzGyi7dbCgu7MgeeIrqoRVCfigJqiSz3wuVQ6mNvCdnbReSy_K-uThwqdzoDes8bqj98s",
+      "src=C:\\Users\\Adarsh\\Desktop\\Coding\\portfolio-0\\portfolio-0\\public\\astra.png",
     tech: ["React", "Node.js", "MongoDB"],
   },
   {
