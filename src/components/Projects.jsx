@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import GitHubIcon from "./GitHubIcon";
 
@@ -262,53 +263,166 @@ function ProjectVisual({ project, featured, wide, index }) {
   );
 }
 
-function ProjectActions({ project }) {
-  return (
-    <div
-      className={`mt-auto grid gap-3 pt-2 ${
-        project.demoUrl ? "grid-cols-2" : "grid-cols-1"
-      }`}
-    >
-      {project.githubUrl ? (
-        <a
-          className={`${ACTION_BASE_CLASS} neu-raised neu-interactive text-primary`}
-          href={project.githubUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${project.title} GitHub repository`}
-        >
-          <GitHubIcon className="h-4 w-4" />
-          GitHub
-          <span className="material-symbols-outlined text-sm">arrow_outward</span>
-        </a>
-      ) : (
-        <button
-          className={`${ACTION_BASE_CLASS} neu-recessed cursor-not-allowed text-secondary/50`}
-          type="button"
-          disabled
-          title="A public GitHub repository is not available for this project"
-        >
-          <GitHubIcon className="h-4 w-4" />
-          GitHub
-          <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] uppercase tracking-wider">
-            Soon
-          </span>
-        </button>
-      )}
+function DemoNotice({ project, onClose }) {
+  const titleId = `${project.id}-demo-title`;
+  const descriptionId = `${project.id}-demo-description`;
 
-      {project.demoUrl && (
-        <a
-          className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
-          href={project.demoUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${project.title} live demo`}
-        >
-          <span className="material-symbols-outlined text-base">open_in_new</span>
-          Live Demo
-        </a>
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-on-surface/35 p-5 backdrop-blur-md"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="w-full max-w-md rounded-[28px] bg-surface p-7 text-on-surface neu-raised sm:p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="neu-recessed flex h-14 w-14 items-center justify-center rounded-2xl text-primary">
+            <span className="material-symbols-outlined text-3xl">construction</span>
+          </div>
+          <button
+            className="neu-raised neu-interactive flex h-10 w-10 items-center justify-center rounded-full text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            type="button"
+            onClick={onClose}
+            aria-label="Close live demo notice"
+          >
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <h3 id={titleId} className="mt-6 text-2xl font-bold text-on-surface">
+          Live demo coming soon
+        </h3>
+        <p id={descriptionId} className="mt-3 text-sm leading-6 text-on-surface-variant">
+          We’re currently working on {project.title} and preparing a live demo. It isn’t
+          available yet, but we’ll share it here as soon as it’s ready.
+        </p>
+        <p className="mt-3 text-sm leading-6 text-on-surface-variant">
+          {project.githubUrl
+            ? "You can explore the source code on GitHub in the meantime."
+            : "We’ll share updates here when the project is ready to preview."}
+        </p>
+
+        <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          {project.githubUrl && (
+            <a
+              className={`${ACTION_BASE_CLASS} neu-raised neu-interactive text-primary`}
+              href={project.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <GitHubIcon className="h-4 w-4" />
+              View GitHub
+            </a>
+          )}
+          <button
+            className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
+            type="button"
+            onClick={onClose}
+            autoFocus
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+function ProjectActions({ project }) {
+  const [showDemoNotice, setShowDemoNotice] = useState(false);
+
+  useEffect(() => {
+    if (!showDemoNotice) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setShowDemoNotice(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showDemoNotice]);
+
+  return (
+    <>
+      <div className="mt-auto grid grid-cols-2 gap-3 pt-2">
+        {project.githubUrl ? (
+          <a
+            className={`${ACTION_BASE_CLASS} neu-raised neu-interactive text-primary`}
+            href={project.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${project.title} GitHub repository`}
+          >
+            <GitHubIcon className="h-4 w-4" />
+            GitHub
+            <span className="material-symbols-outlined text-sm">arrow_outward</span>
+          </a>
+        ) : (
+          <button
+            className={`${ACTION_BASE_CLASS} neu-recessed cursor-not-allowed text-secondary/50`}
+            type="button"
+            disabled
+            title="A public GitHub repository is not available for this project"
+          >
+            <GitHubIcon className="h-4 w-4" />
+            GitHub
+            <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] uppercase tracking-wider">
+              Soon
+            </span>
+          </button>
+        )}
+
+        {project.demoUrl ? (
+          <a
+            className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${project.title} live demo`}
+          >
+            <span className="material-symbols-outlined text-base">open_in_new</span>
+            Live Demo
+          </a>
+        ) : (
+          <button
+            className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
+            type="button"
+            onClick={() => setShowDemoNotice(true)}
+            aria-haspopup="dialog"
+          >
+            <span className="material-symbols-outlined text-base">visibility</span>
+            Live Demo
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-primary">
+              Soon
+            </span>
+          </button>
+        )}
+      </div>
+
+      {showDemoNotice && (
+        <DemoNotice project={project} onClose={() => setShowDemoNotice(false)} />
       )}
-    </div>
+    </>
   );
 }
 
