@@ -40,7 +40,7 @@ export const PROJECTS = [
       "A minimalist task-management web application centered on clear, focused productivity workflows. The interface pairs a compact task experience with the portfolio's soft neumorphic visual language.",
     tech: ["Next.js", "Tailwind CSS", "TypeScript"],
     githubUrl: null,
-    demoUrl: null,
+    demoUrl: "https://client-seven-alpha-20.vercel.app/",
     featured: true,
     icon: "leaderboard",
     accent: "from-cyan-950 via-blue-900 to-indigo-700",
