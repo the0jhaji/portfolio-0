@@ -6,9 +6,9 @@ import { createPortal } from "react-dom";
  *
  * Selecting a resume no longer downloads it directly — it opens here, embedded
  * in the site, with an explicit Download button in the header. The dialog is
- * deliberately framed like the site's other overlay (GithubLinkGuard): portal
- * to <body> so the fixed navbar cannot trap it, body scroll locked while open,
- * Escape to close, backdrop click to close, and focus moved into the dialog.
+ * deliberately framed like the site's other overlays: portal to <body> so the
+ * fixed navbar cannot trap it, body scroll locked while open, Escape to close,
+ * backdrop click to close, and focus moved into the dialog.
  */
 export default function ResumeViewer({ resume, onClose }) {
   const closeRef = useRef(null);
