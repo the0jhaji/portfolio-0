@@ -15,10 +15,12 @@ const timeline = [
   {
     title: "12th (PCM)",
     tag: "2020 - 2022",
+    score: "72.4% aggregate",
     school: "J.P College Ara, Bihar",
   },
   {
     title: "10th Grade",
+    score: "72.4% aggregate",
     school: "M.D Carmel School",
     location: "Jagdishpur, Ara, Bihar",
   },
@@ -83,10 +85,25 @@ export default function About() {
                   <div className="timeline-dot absolute -left-[11px] top-1 w-5 h-5 rounded-full bg-surface border-4 border-primary"></div>
                   <div className="flex flex-col mb-1">
                     <h4 className="text-xl font-bold text-on-surface">{item.title}</h4>
-                    {item.tag && (
-                      <span className="font-label-mono text-primary font-medium bg-primary/10 px-3 py-1 rounded-full text-xs w-fit mt-2">
-                        {item.tag}
-                      </span>
+                    {(item.tag || item.score) && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        {item.tag && (
+                          <span className="font-label-mono text-primary font-medium bg-primary/10 px-3 py-1 rounded-full text-xs w-fit">
+                            {item.tag}
+                          </span>
+                        )}
+                        {item.score && (
+                          <span className="inline-flex items-center gap-1 font-label-mono text-primary font-medium bg-primary/10 px-3 py-1 rounded-full text-xs w-fit">
+                            <span
+                              className="material-symbols-outlined text-sm"
+                              aria-hidden="true"
+                            >
+                              trophy
+                            </span>
+                            {item.score}
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                   <p className="text-secondary font-medium">{item.school}</p>

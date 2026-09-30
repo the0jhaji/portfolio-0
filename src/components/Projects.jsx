@@ -273,11 +273,11 @@ function ProjectVisual({ project, featured, wide, index }) {
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             loading={index === 0 ? "eager" : "lazy"}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-orange-950/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/10 to-orange-950/10" />
           <div className="absolute left-6 top-6 z-10 flex items-center gap-2">
             {/* The plate has to be opaque enough on its own: a 45% wash let the
                 screenshot show through and dropped the white label to 3.9:1. */}
-            <span className="rounded-full border border-white/20 bg-slate-950/75 px-3 py-1.5 font-label-mono text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-md">
+            <span className="rounded-full border border-white/20 bg-stone-950/75 px-3 py-1.5 font-label-mono text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-md">
               Featured build
             </span>
           </div>

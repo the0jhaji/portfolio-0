@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const SESSION_KEY = "astra-welcome-seen";
-const DURATION_MS = 1800;
+// Progress runs over 3s, then ~0.3s hold at 100% plus the 0.5s fade-out, so
+// the overlay is on screen for roughly 3.8s — comfortably above the 3s minimum.
+const DURATION_MS = 3000;
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
