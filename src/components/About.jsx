@@ -44,12 +44,19 @@ export default function About() {
           </p>
 
           <div className="neu-recessed rounded-2xl p-6 mt-4">
-            <h4 className="font-bold text-on-surface mb-4">Quick Stats</h4>
+            <h3 className="font-bold text-on-surface mb-4">Quick Stats</h3>
             <div className="grid grid-cols-2 gap-4">
               {stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center text-center p-2">
+                <div
+                  key={stat.label}
+                  className="flex min-w-0 flex-col items-center text-center p-2"
+                >
                   <p className="text-3xl font-bold text-primary">{stat.value}</p>
-                  <p className="text-xs font-medium text-secondary uppercase tracking-wider mt-1">
+                  {/* "Certifications" is one unbreakable word. It needs w-full
+                      as well as break-words: as a flex item its default
+                      min-width:auto is its min-content width, so break-words
+                      alone never gets a chance to fire. */}
+                  <p className="mt-1 w-full break-words text-xs font-medium uppercase tracking-wide text-secondary">
                     {stat.label}
                   </p>
                 </div>
@@ -70,7 +77,10 @@ export default function About() {
                   key={item.title}
                   className={`relative pl-8 reveal stagger-${index + 3} active`}
                 >
-                  <div className="absolute -left-[11px] top-1 w-5 h-5 rounded-full bg-surface border-4 border-primary shadow-[0_0_10px_rgba(53,37,205,0.5)]"></div>
+                  {/* An arbitrary rgba() here would hard-code the old blue and
+                      ignore the theme, so the glow is declared in index.css
+                      against the primary token instead. */}
+                  <div className="timeline-dot absolute -left-[11px] top-1 w-5 h-5 rounded-full bg-surface border-4 border-primary"></div>
                   <div className="flex flex-col mb-1">
                     <h4 className="text-xl font-bold text-on-surface">{item.title}</h4>
                     {item.tag && (
@@ -81,7 +91,7 @@ export default function About() {
                   </div>
                   <p className="text-secondary font-medium">{item.school}</p>
                   {item.location && (
-                    <p className="text-sm text-secondary/80">{item.location}</p>
+                    <p className="text-sm text-secondary">{item.location}</p>
                   )}
                 </div>
               ))}

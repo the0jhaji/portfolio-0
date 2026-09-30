@@ -2,8 +2,87 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ADARSH - Portfolio</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <title>Adarsh Ojha — CSE Student, AI/ML &amp; Full-Stack Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Adarsh Ojha, a Computer Science student building AI systems, machine-learning experiments and full-stack web products. Currently a Web Developer Intern at InAmigos Foundation."
+    />
+    <meta name="author" content="Adarsh Ojha" />
+    <!-- Browser-chrome tint. The media-scoped pair covers visitors who never
+         touch the toggle; ThemeToggle rewrites them live once they do. -->
+    <meta name="theme-color" content="#e0e5ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#22252e" media="(prefers-color-scheme: dark)" />
+
+    <!-- Resolve the theme before first paint. Without this the page renders in
+         light mode and then snaps to dark once React mounts, which is a visible
+         white flash on every load for anyone whose OS is set to dark. -->
+    <script>
+      (function () {
+        var theme = "light";
+        try {
+          var stored = localStorage.getItem("theme");
+          if (stored === "light" || stored === "dark") {
+            theme = stored;
+          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            theme = "dark";
+          }
+        } catch (error) {
+          // Private mode or blocked storage: fall through to the light default.
+        }
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+
+    <!-- Favicons. The logo is near-black with an ember core, so it needs a
+         backing plate to stay legible: light plate for light browser chrome,
+         dark plate for dark. Sizes cover legacy tabs, high-DPI and iOS. -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon-dark-32.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon-dark-16.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/favicon-dark-192.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Social preview, so link unfurls (LinkedIn, X, WhatsApp) render a card -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Adarsh Ojha — AI/ML &amp; Full-Stack Developer" />
+    <meta
+      property="og:description"
+      content="AI systems, machine-learning experiments and full-stack web products. Currently a Web Developer Intern at InAmigos Foundation."
+    />
+    <meta property="og:image" content="/profile.jpg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Adarsh Ojha — AI/ML &amp; Full-Stack Developer" />
+    <meta
+      name="twitter:description"
+      content="AI systems, machine-learning experiments and full-stack web products."
+    />
+    <meta name="twitter:image" content="/profile.jpg" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
       rel="stylesheet"

@@ -47,10 +47,10 @@ export default function Skills() {
             } active`}
           >
             <div className="flex items-center gap-4">
-              <div className="neu-recessed p-4 rounded-full flex items-center justify-center group-hover:text-primary transition-colors">
+              <div className="neu-recessed p-4 rounded-full flex shrink-0 items-center justify-center group-hover:text-primary transition-colors">
                 <span className="material-symbols-outlined">{skill.icon}</span>
               </div>
-              <h3 className="font-bold text-xl">{skill.title}</h3>
+              <h3 className="min-w-0 break-words font-bold text-xl">{skill.title}</h3>
             </div>
             <div className="neu-recessed rounded-xl p-4 flex flex-wrap gap-2 mt-2">
               {skill.items.map((item) => (

@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import About from "../components/About";
+import Experience from "../components/Experience";
 import Skills from "../components/Skills";
 import CodingProfiles from "../components/CodingProfiles";
 import Projects from "../components/Projects";
@@ -8,7 +9,7 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { useScrollReveal, useActiveSection } from "../hooks/useReveal";
 
-const NAV_SECTIONS = ["about", "skills", "projects", "contact"];
+const NAV_SECTIONS = ["about", "experience", "skills", "projects", "contact"];
 
 export default function Home() {
   const containerRef = useScrollReveal();
@@ -24,6 +25,7 @@ export default function Home() {
       <main className="flex-grow pt-32 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-32">
         <Hero />
         <About />
+        <Experience />
         <Skills />
         <CodingProfiles />
         <Projects />

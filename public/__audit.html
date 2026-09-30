@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html, body { margin: 0; padding: 0; background: #111; }
+      #frames { display: flex; flex-wrap: wrap; gap: 16px; padding: 16px; align-items: flex-start; }
+      figure { margin: 0; }
+      figcaption { color: #0f0; font: 12px monospace; padding: 4px 0; }
+      iframe { border: 1px solid #333; display: block; background: #fff; }
+      .stage { position: static; display: block; min-height: 1px; }
+    </style>
+  </head>
+  <body>
+    <div class="stage" id="stage"></div>
+    <div id="frames"></div>
+    <script>
+      const SIZES = [
+        [280, 653], [320, 653], [360, 740], [375, 667], [390, 844],
+        [414, 896], [480, 800], [640, 480], [768, 1024], [834, 1112],
+        [1024, 768], [1280, 800], [1440, 900], [1920, 1080],
+        [667, 375], [844, 390]
+      ];
+      const ROUTES = ['/', '/projects'];
+      const THEME = new URLSearchParams(location.search).get('theme') || 'light';
+      const stage = document.getElementById('stage');
+
+      const MATRIX = [];
+      SIZES.forEach(([w, h]) => ROUTES.forEach((route) => MATRIX.push([w, h, route])));
+      const from = parseInt(new URLSearchParams(location.search).get('from') || '0', 10);
+      const to = parseInt(new URLSearchParams(location.search).get('to') || String(MATRIX.length), 10);
+      const BATCH = MATRIX.slice(from, to);
+
+      const PROBE = function () {
+        const doc = document.documentElement;
+        const w = window;
+
+        const isClipped = (el) => {
+          let n = el.parentElement;
+          while (n && n !== doc) {
+            const o = getComputedStyle(n);
+            if (o.overflow !== 'visible' || o.overflowX !== 'visible') return true;
+            n = n.parentElement;
+          }
+          return false;
+        };
+
+        // Style is still loading -> everything measures as unstyled junk.
+        const styled = getComputedStyle(document.body).backgroundColor !== 'rgba(0, 0, 0, 0)'
+          && getComputedStyle(document.body).color !== 'rgb(0, 0, 0)';
+
+        const overflow = [];
+        doc.querySelectorAll('*').forEach((el) => {
+          if (el.scrollWidth > el.clientWidth + 1 && el.clientWidth > 0 && !isClipped(el)) {
+            // animate-ping dots scale a ::after past their own 8px box;
+            // scrollWidth counts that pseudo-element, so it is not real overflow.
+            const after = getComputedStyle(el, '::after');
+            const before = getComputedStyle(el, '::before');
+            const hasPseudo = (after && after.position === 'absolute')
+                           || (before && before.position === 'absolute');
+            if (hasPseudo && el.className && String(el.className).includes('relative')) return;
+            overflow.push({
+              tag: el.tagName.toLowerCase(),
+              cls: (el.className || '').toString().slice(0, 48),
+              over: el.scrollWidth - el.clientWidth
+            });
+          }
+        });
+
+        const tinyText = [];
+        doc.querySelectorAll('*').forEach((el) => {
+          const hasText = Array.from(el.childNodes).some(
+            (n) => n.nodeType === 3 && n.textContent.trim().length > 1
+          );
+          if (!hasText) return;
+          const fs = parseFloat(getComputedStyle(el).fontSize);
+          if (fs && fs < 10) {
+            tinyText.push({
+              cls: (el.className || '').toString().slice(0, 44),
+              fs,
+              txt: el.textContent.trim().slice(0, 22)
+            });
+          }
+        });
+
+        const smallTargets = [];
+        doc.querySelectorAll('a,button,input,textarea,select,[role="button"]').forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) return;
+          if (getComputedStyle(el).display === 'none') return;
+          if (r.height < 43.5) {
+            smallTargets.push({
+              cls: (el.className || '').toString().slice(0, 40),
+              h: Math.round(r.height),
+              txt: (el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 20)
+            });
+          }
+        });
+
+        const burger = doc.querySelector('button[aria-controls="mobile-navigation"]');
+        const burgerVisible = burger ? getComputedStyle(burger).display !== 'none' : null;
+        const toggle = doc.querySelector('button[aria-pressed]');
+        const tb = toggle ? toggle.getBoundingClientRect() : null;
+
+        return {
+          styled,
+          theme: doc.getAttribute('data-theme'),
+          innerW: w.innerWidth,
+          hScroll: doc.scrollWidth > doc.clientWidth + 1,
+          hScrollBy: doc.scrollWidth - doc.clientWidth,
+          overflow: overflow.slice(0, 6),
+          overflowN: overflow.length,
+          tinyText: tinyText.slice(0, 5),
+          tinyTextN: tinyText.length,
+          smallTargets: smallTargets.slice(0, 5),
+          smallTargetsN: smallTargets.length,
+          // Media queries key off the full viewport width, so compare innerWidth.
+          expectBurger: w.innerWidth < 1024,
+          burgerVisible,
+          navOk: burgerVisible === (w.innerWidth < 1024),
+          toggleW: tb ? Math.round(tb.width) : null,
+          toggleH: tb ? Math.round(tb.height) : null
+        };
+      };
+
+      window.__ready = false;
+      window.__results = [];
+      window.__progress = 0;
+
+      // Runs ONE frame at a time, in the visible viewport. Loading 32 React
+      // apps at once (or parking them offscreen) starves the tail: frames come
+      // back with an empty #root or with no stylesheet applied, which measures
+      // as "no problems" and is worse than no result.
+      async function runOne([w, h, route]) {
+        const f = document.createElement('iframe');
+        f.width = w; f.height = h;
+        f.src = route + '?__frame=1';
+        stage.appendChild(f);
+
+        // Wait for React to actually mount, not a fixed timeout.
+        let mounted = false;
+        for (let i = 0; i < 100; i++) {
+          await new Promise((r) => setTimeout(r, 150));
+          try {
+            const root = f.contentDocument.getElementById('root');
+            if (root && root.children.length > 0) { mounted = true; break; }
+          } catch (e) { /* not ready yet */ }
+        }
+
+        let result;
+        if (!mounted) {
+          result = { notRendered: true };
+        } else {
+          // Mount is not paint: give the stylesheet a moment to apply.
+          await new Promise((r) => setTimeout(r, 700));
+          try {
+            f.contentWindow.localStorage.setItem('theme', THEME);
+            f.contentDocument.documentElement.setAttribute('data-theme', THEME);
+            await new Promise((r) => setTimeout(r, 200));
+            result = f.contentWindow.eval('(' + PROBE.toString() + ')')();
+          } catch (e) {
+            result = { error: String(e) };
+          }
+        }
+        stage.removeChild(f);
+        window.__results.push({ w, h, route, ...result });
+        window.__progress++;
+        return result;
+      }
+
+      (async () => {
+        for (const entry of BATCH) await runOne(entry);
+        window.__ready = true;
+      })();
+    </script>
+  </body>
+</html>

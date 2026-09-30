@@ -5,8 +5,8 @@ import GitHubIcon from "./GitHubIcon";
 
 export const PROJECTS = [
   {
-    id: "astra-ai",
-    title: "ASTRA AI",
+    id: "astra",
+    title: "ASTRA",
     category: "AI / Computer Vision",
     description:
       "An offline astronaut-assistance system that monitors space-station activity, detects people, tools, and equipment, and recognizes procedures and hazards. It combines pose estimation, object tracking, event recognition, and offline voice alerts without cloud connectivity.",
@@ -26,24 +26,62 @@ export const PROJECTS = [
       "Offline TTS",
     ],
     githubUrl: null,
-    demoUrl: null,
+    demoUrl: "https://sih-2026-prototype-nine.vercel.app/",
     featured: true,
     icon: "deployed_code",
-    accent: "from-slate-950 via-indigo-950 to-violet-800",
+    accent: "from-stone-950 via-amber-950 to-orange-700",
     image: "/astra.png",
+  },
+  {
+    id: "maruti",
+    title: "Maruti — Hyperlocal Weather & Agricultural/Construction Advisory System",
+    tagline:
+      "Micro-level rainfall forecasting and decision support powered by Machine Learning and GIS data.",
+    category: "AI / Geospatial Intelligence",
+    description:
+      "Maruti is a full-stack weather intelligence platform that delivers Panchayat-level forecasts and industry advisories for agriculture and construction. Powered by a Node.js/Express backend, Python ML models (Random Forest/HGB), and real-time GIS & IMD weather streams, it translates raw climate data into interactive risk analytics and spatial visualizations via a React + Vite dashboard.",
+    tech: [
+      "React",
+      "Vite",
+      "Node.js",
+      "Express",
+      "Python",
+      "Pandas",
+      "NumPy",
+      "scikit-learn",
+      "GIS",
+      "Recharts",
+      "Leaflet",
+      "Random Forest",
+      "Gradient Boosting",
+      "Quantile Regression",
+      "ECMWF HRES",
+      "WRF-ARW",
+      "IMD GFS",
+      "SRTM",
+      "IMD AWS",
+      "LGD Boundaries",
+    ],
+    githubUrl: null,
+    demoUrl: "https://sih-ps2-prototype.vercel.app/",
+    featured: true,
+    icon: "satellite_alt",
+    accent: "from-neutral-950 via-emerald-950 to-lime-800",
+    image: "/maruti.png",
   },
   {
     id: "know-your-leader",
     title: "Know Your Leader",
     category: "Full Stack / Web Development",
     description:
-      "A minimalist task-management web application centered on clear, focused productivity workflows. The interface pairs a compact task experience with the portfolio's soft neumorphic visual language.",
-    tech: ["Next.js", "Tailwind CSS", "TypeScript"],
+      "A political information and candidate research platform that makes publicly available information about political leaders easier to discover and understand. Know Your Leader organises candidate profiles into a structured interface covering election and constituency details, publicly declared assets and liabilities, criminal-case disclosures and party affiliation, with search and explore views for browsing across leaders. All content is drawn from publicly available sources such as election commission records and candidate affidavits, and is presented without endorsement.",
+    tech: ["React", "JavaScript", "Node.js", "MongoDB"],
     githubUrl: null,
     demoUrl: "https://client-seven-alpha-20.vercel.app/",
     featured: true,
     icon: "leaderboard",
-    accent: "from-cyan-950 via-blue-900 to-indigo-700",
+    accent: "from-stone-950 via-rose-950 to-pink-700",
+    image: "/know-your-leader.png",
   },
   {
     id: "sweety",
@@ -56,7 +94,7 @@ export const PROJECTS = [
     demoUrl: null,
     featured: true,
     icon: "smart_toy",
-    accent: "from-fuchsia-950 via-purple-900 to-rose-700",
+    accent: "from-stone-950 via-fuchsia-950 to-rose-600",
     stackNote: "Technology stack not public",
   },
   {
@@ -78,7 +116,7 @@ export const PROJECTS = [
     demoUrl: null,
     featured: false,
     icon: "mark_email_unread",
-    accent: "from-slate-950 via-blue-950 to-cyan-700",
+    accent: "from-neutral-950 via-amber-950 to-yellow-700",
   },
   {
     id: "library-website",
@@ -101,7 +139,7 @@ export const PROJECTS = [
     demoUrl: null,
     featured: false,
     icon: "local_library",
-    accent: "from-emerald-950 via-teal-900 to-cyan-700",
+    accent: "from-emerald-950 via-green-900 to-lime-700",
   },
   {
     id: "car-price-prediction",
@@ -123,7 +161,7 @@ export const PROJECTS = [
     demoUrl: null,
     featured: false,
     icon: "directions_car",
-    accent: "from-slate-950 via-blue-950 to-sky-700",
+    accent: "from-stone-950 via-neutral-800 to-amber-700",
   },
   {
     id: "parkinsons-prediction",
@@ -144,7 +182,7 @@ export const PROJECTS = [
     demoUrl: null,
     featured: false,
     icon: "neurology",
-    accent: "from-violet-950 via-purple-900 to-fuchsia-700",
+    accent: "from-neutral-950 via-rose-950 to-orange-700",
   },
   {
     id: "calories-burn-prediction",
@@ -182,27 +220,29 @@ export const PROJECTS = [
   },
 ];
 
-export const PROJECT_FILTERS = [
-  "All",
-  "AI / Computer Vision",
-  "AI Assistant",
-  "Full Stack / Web Development",
-  "Machine Learning",
-  "Innovation",
-];
-
+// Each badge carries a light and a dark treatment. The pale `*-50` backgrounds
+// and `*-200` rings are invisible against a dark surface, so dark mode swaps
+// to a translucent fill with a bright text tone.
 const CATEGORY_STYLES = {
   "AI / Computer Vision":
-    "bg-indigo-50 text-indigo-700 ring-indigo-200/80",
-  "AI Assistant": "bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-200/80",
+    "bg-orange-50 text-orange-800 ring-orange-200/80 dark:bg-orange-500/15 dark:text-orange-300 dark:ring-orange-400/25",
+  "AI / Geospatial Intelligence":
+    "bg-emerald-50 text-emerald-800 ring-emerald-200/80 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-400/25",
+  "AI Assistant":
+    "bg-pink-50 text-pink-800 ring-pink-200/80 dark:bg-pink-500/15 dark:text-pink-300 dark:ring-pink-400/25",
   "Full Stack / Web Development":
-    "bg-cyan-50 text-cyan-700 ring-cyan-200/80",
-  "Machine Learning": "bg-emerald-50 text-emerald-700 ring-emerald-200/80",
-  Innovation: "bg-amber-50 text-amber-800 ring-amber-200/80",
+    "bg-amber-50 text-amber-800 ring-amber-200/80 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-400/25",
+  "Machine Learning":
+    "bg-lime-50 text-lime-800 ring-lime-200/80 dark:bg-lime-500/15 dark:text-lime-300 dark:ring-lime-400/25",
+  Innovation:
+    "bg-yellow-50 text-yellow-800 ring-yellow-200/80 dark:bg-yellow-500/15 dark:text-yellow-300 dark:ring-yellow-400/25",
 };
 
 const ACTION_BASE_CLASS =
   "flex min-h-11 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
+
+// Featured builds that get a full-width, two-column card treatment.
+const WIDE_PROJECT_IDS = new Set(["astra", "maruti"]);
 
 function ProjectVisual({ project, featured, wide, index }) {
   const heightClass = wide
@@ -233,9 +273,11 @@ function ProjectVisual({ project, featured, wide, index }) {
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             loading={index === 0 ? "eager" : "lazy"}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-indigo-950/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-orange-950/10" />
           <div className="absolute left-6 top-6 z-10 flex items-center gap-2">
-            <span className="rounded-full border border-white/20 bg-slate-950/45 px-3 py-1.5 font-label-mono text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-md">
+            {/* The plate has to be opaque enough on its own: a 45% wash let the
+                screenshot show through and dropped the white label to 3.9:1. */}
+            <span className="rounded-full border border-white/20 bg-slate-950/75 px-3 py-1.5 font-label-mono text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-md">
               Featured build
             </span>
           </div>
@@ -379,14 +421,17 @@ function ProjectActions({ project }) {
           </a>
         ) : (
           <button
-            className={`${ACTION_BASE_CLASS} neu-recessed cursor-not-allowed text-secondary/50`}
+            className={`${ACTION_BASE_CLASS} neu-recessed cursor-not-allowed text-secondary`}
             type="button"
             disabled
             title="A public GitHub repository is not available for this project"
           >
             <GitHubIcon className="h-4 w-4" />
             GitHub
-            <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] uppercase tracking-wider">
+            {/* The disabled state is carried by the recessed shadow, the
+                not-allowed cursor and this chip — not by fading the label out,
+                which made it unreadable rather than merely inactive. */}
+            <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[11px] uppercase tracking-wider text-secondary">
               Soon
             </span>
           </button>
@@ -412,7 +457,7 @@ function ProjectActions({ project }) {
           >
             <span className="material-symbols-outlined text-base">visibility</span>
             Live Demo
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-primary">
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] uppercase tracking-wider text-primary">
               Soon
             </span>
           </button>
@@ -464,6 +509,11 @@ export function ProjectCard({ project, featured = false, wide = false, index = 0
         >
           {project.title}
         </h3>
+        {project.tagline && (
+          <p className="mt-2 border-l-2 border-primary/40 pl-3 text-sm font-medium italic leading-6 text-secondary">
+            {project.tagline}
+          </p>
+        )}
         <p
           className={`mt-3 text-on-surface-variant ${
             featured ? "text-base leading-7" : "text-sm leading-6"
@@ -477,13 +527,13 @@ export function ProjectCard({ project, featured = false, wide = false, index = 0
             project.tech.map((technology) => (
               <span
                 key={technology}
-                className="rounded-full border border-white/50 bg-surface px-3 py-1.5 font-label-mono text-xs font-medium text-secondary shadow-sm"
+                className="rounded-full border border-hairline bg-surface px-3 py-1.5 font-label-mono text-xs font-medium text-secondary shadow-sm"
               >
                 {technology}
               </span>
             ))
           ) : (
-            <span className="flex items-center gap-1.5 rounded-full border border-dashed border-secondary/30 px-3 py-1.5 font-label-mono text-xs text-secondary/70">
+            <span className="flex items-center gap-1.5 rounded-full border border-dashed border-secondary/30 px-3 py-1.5 font-label-mono text-xs text-secondary">
               <span className="material-symbols-outlined text-sm">lock</span>
               {project.stackNote}
             </span>
@@ -496,58 +546,19 @@ export function ProjectCard({ project, featured = false, wide = false, index = 0
   );
 }
 
-export function ProjectFilters({ activeCategory, onCategoryChange }) {
-  const getCount = (category) =>
-    category === "All"
-      ? PROJECTS.length
-      : PROJECTS.filter((project) => project.category === category).length;
-
-  return (
-    <div
-      className="flex flex-wrap justify-center gap-2 sm:gap-3"
-      role="group"
-      aria-label="Filter projects by category"
-    >
-      {PROJECT_FILTERS.map((category) => {
-        const isActive = category === activeCategory;
-
-        return (
-          <button
-            key={category}
-            type="button"
-            onClick={() => onCategoryChange(category)}
-            aria-pressed={isActive}
-            className={`flex items-center gap-2 rounded-full px-3.5 py-2.5 font-label-mono text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface sm:px-4 sm:text-sm ${
-              isActive
-                ? "neu-recessed text-primary"
-                : "neu-raised text-secondary hover:text-primary"
-            }`}
-          >
-            <span>{category}</span>
-            <span
-              className={`rounded-full px-2 py-0.5 text-[10px] ${
-                isActive ? "bg-primary/10" : "bg-secondary/10"
-              }`}
-            >
-              {getCount(category)}
-            </span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-export function ProjectResults({ activeCategory }) {
-  const visibleProjects =
-    activeCategory === "All"
-      ? PROJECTS
-      : PROJECTS.filter((project) => project.category === activeCategory);
+export function ProjectResults({ limit }) {
+  const visibleProjects = limit ? PROJECTS.slice(0, limit) : PROJECTS;
   const featuredProjects = visibleProjects.filter((project) => project.featured);
   const supportingProjects = visibleProjects.filter((project) => !project.featured);
 
+  // The home page showcases a short, fixed-size selection, so only the lead card
+  // spans the full width. The gallery keeps its own hand-tuned wide-card set.
+  const wideProjectIds = limit
+    ? new Set(visibleProjects[0] ? [visibleProjects[0].id] : [])
+    : WIDE_PROJECT_IDS;
+
   return (
-    <div className="mt-10 flex flex-col gap-12">
+    <div className="flex flex-col gap-12">
       {featuredProjects.length > 0 && (
         <div>
           <div className="mb-6 flex items-end justify-between gap-4">
@@ -570,7 +581,7 @@ export function ProjectResults({ activeCategory }) {
                 key={project.id}
                 project={project}
                 featured
-                wide={project.id === "astra-ai"}
+                wide={wideProjectIds.has(project.id)}
                 index={PROJECTS.findIndex((item) => item.id === project.id)}
               />
             ))}
@@ -601,19 +612,34 @@ export function ProjectResults({ activeCategory }) {
               <ProjectCard
                 key={project.id}
                 project={project}
+                wide={wideProjectIds.has(project.id)}
                 index={PROJECTS.findIndex((item) => item.id === project.id)}
               />
             ))}
           </div>
         </div>
       )}
+
+      {limit && (
+        <div className="flex justify-center pt-4">
+          <Link
+            to="/projects"
+            className={`${ACTION_BASE_CLASS} neu-raised neu-interactive px-7 py-4 text-primary`}
+          >
+            <span className="material-symbols-outlined text-base">grid_view</span>
+            See all {PROJECTS.length} projects
+            <span className="material-symbols-outlined text-base">arrow_outward</span>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
 
-export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState("All");
+// Number of projects previewed on the home page before the "see all" CTA.
+const HOME_PROJECT_LIMIT = 3;
 
+export default function Projects() {
   return (
     <section className="scroll-mt-32 section" id="projects">
       <div className="mb-10 flex flex-col gap-6 reveal active md:flex-row md:items-end md:justify-between">
@@ -641,11 +667,7 @@ export default function Projects() {
         </Link>
       </div>
 
-      <ProjectFilters
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
-      <ProjectResults activeCategory={activeCategory} />
+      <ProjectResults limit={HOME_PROJECT_LIMIT} />
     </section>
   );
 }

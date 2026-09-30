@@ -1,56 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
+  // Key `dark:` off our own attribute rather than prefers-color-scheme, so the
+  // manual toggle and the OS preference stay in agreement. The default
+  // (media-query based) would ignore the toggle entirely.
+  darkMode: ["variant", '&[data-theme="dark"] &'],
   theme: {
     extend: {
+      // Every colour resolves through a CSS variable declared in index.css, so
+      // flipping `data-theme` on <html> re-themes the whole site at once.
+      // The `rgb(var(--x) / <alpha-value>)` form is what lets Tailwind's own
+      // opacity modifiers keep working — `bg-primary/10`, `text-primary/70`.
       colors: {
-        primary: "#3525cd",
-        secondary: "#5d5e5f",
-        surface: "#e0e5ec",
-        "on-surface": "#2d3748",
-        "on-surface-variant": "#464555",
-        "on-tertiary": "#ffffff",
-        "primary-fixed-dim": "#c3c0ff",
-        "primary-fixed": "#e2dfff",
-        "surface-container-lowest": "#ffffff",
-        "on-secondary-fixed-variant": "#454747",
-        "surface-bright": "#fcf8ff",
-        "secondary-fixed-dim": "#c6c6c6",
-        "surface-dim": "#dcd8e5",
-        "tertiary-container": "#a44100",
-        "on-secondary": "#ffffff",
-        "outline-variant": "#c7c4d8",
-        "inverse-primary": "#c3c0ff",
-        "surface-tint": "#4d44e3",
-        "surface-container": "#f0ecf9",
-        "primary-container": "#4f46e5",
-        "error": "#ba1a1a",
-        "secondary-container": "#e2e2e2",
-        "tertiary-fixed-dim": "#ffb695",
-        "surface-container-high": "#eae6f4",
-        "on-secondary-fixed": "#1a1c1c",
-        "tertiary": "#7e3000",
-        "inverse-on-surface": "#f3effc",
-        "surface-container-low": "#f5f2ff",
-        "on-primary": "#ffffff",
-        "surface-variant": "#e4e1ee",
-        "on-tertiary-fixed-variant": "#7b2f00",
-        "inverse-surface": "#302f39",
-        "surface-container-highest": "#e4e1ee",
-        "on-primary-fixed": "#0f0069",
-        "secondary-fixed": "#e2e2e2",
-        "on-primary-container": "#dad7ff",
-        "on-background": "#1b1b24",
-        "on-error": "#ffffff",
-        "tertiary-fixed": "#ffdbcc",
-        "on-tertiary-container": "#ffd2be",
-        "outline": "#777587",
-        "error-container": "#ffdad6",
-        "on-primary-fixed-variant": "#3323cc",
-        "on-tertiary-fixed": "#351000",
-        "on-secondary-container": "#636465",
-        "background": "#fcf8ff",
-        "on-error-container": "#93000a",
+        primary: "rgb(var(--primary) / <alpha-value>)",
+        "primary-bright": "rgb(var(--primary-bright) / <alpha-value>)",
+        "primary-soft": "rgb(var(--primary-soft) / <alpha-value>)",
+        secondary: "rgb(var(--secondary) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        "on-surface": "rgb(var(--on-surface) / <alpha-value>)",
+        "on-surface-variant": "rgb(var(--on-surface-variant) / <alpha-value>)",
+        error: "rgb(var(--error) / <alpha-value>)",
+        success: "rgb(var(--success) / <alpha-value>)",
+        // Overlay helpers. These invert between themes: a white wash reads as
+        // glare on a dark surface, so dark mode swaps them for black.
+        hud: "rgb(var(--hud) / <alpha-value>)",
+        hairline: "rgb(var(--hairline) / <alpha-value>)",
       },
       borderRadius: {
         DEFAULT: "0.25rem",

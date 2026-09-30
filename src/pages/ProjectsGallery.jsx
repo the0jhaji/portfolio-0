@@ -1,15 +1,8 @@
-import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import {
-  PROJECTS,
-  ProjectFilters,
-  ProjectResults,
-} from "../components/Projects";
+import { PROJECTS, ProjectResults } from "../components/Projects";
 
 export default function ProjectsGallery() {
-  const [activeCategory, setActiveCategory] = useState("All");
-
   return (
     <div className="min-h-screen bg-surface font-body-md text-on-surface antialiased">
       <Navbar activeSection="projects" />
@@ -31,14 +24,7 @@ export default function ProjectsGallery() {
           </p>
         </div>
 
-        <div className="reveal active stagger-1 rounded-[28px] p-3 sm:p-4">
-          <ProjectFilters
-            activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
-          />
-        </div>
-
-        <ProjectResults activeCategory={activeCategory} />
+        <ProjectResults />
       </main>
 
       <Footer />

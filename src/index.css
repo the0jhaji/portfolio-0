@@ -2,40 +2,129 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   THEME TOKENS
+   Every colour the site paints with lives here. Tailwind reads these through
+   `rgb(var(--token) / <alpha-value>)`, so a single attribute flip on <html>
+   re-themes the entire site with no component changes.
+
+   Channels are stored space-separated (not hex) precisely so Tailwind can
+   apply its own opacity modifiers, e.g. `bg-primary/10`.
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Ember accent. --primary is the text/icon tone and is contrast-checked
+     against --surface; --primary-bright is for glows and gradients only,
+     where it never carries text. */
+  --primary: 156 61 6; /* #9c3d06 — 5.4:1 on the light surface */
+  --primary-bright: 245 158 11; /* #f59e0b */
+  --primary-soft: 255 237 213; /* #ffedd5 */
+
+  --surface: 224 229 236; /* #e0e5ec */
+  --on-surface: 45 55 72; /* #2d3748 */
+  --on-surface-variant: 70 69 85; /* #464555 */
+  --secondary: 74 75 77; /* #4a4b4d — 7.1:1, so alpha variants stay readable */
+  --error: 186 26 26; /* #ba1a1a */
+  /* Status green. Deliberately not a raw palette entry: Tailwind's green-600
+     only reaches 2.4:1 on this surface. */
+  --success: 22 101 52; /* #166534 — 5.6:1 */
+
+  /* Neumorphism needs two opposing shadows: a dark one and a light one.
+     On light surfaces the light shadow is near-opaque white; on dark surfaces
+     it has to drop to a trace or the whole thing flattens out. */
+  --neu-dark: 163 177 198;
+  --neu-dark-a: 0.6;
+  --neu-light: 255 255 255;
+  --neu-light-a: 0.5;
+  --neu-inset-dark-a: 0.7;
+  --neu-inset-light-a: 0.8;
+
+  /* Overlay helpers. White is the lightening surface in light mode and pure
+     black in dark mode, where a white wash would read as glare. */
+  --hud: 255 255 255;
+  --hairline: 255 255 255;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --primary: 251 191 36; /* #fbbf24 — 9.2:1 on the dark surface */
+  --primary-bright: 251 191 36;
+  --primary-soft: 120 53 15; /* #78350f */
+
+  --surface: 34 37 46; /* #22252e */
+  --on-surface: 232 234 240; /* #e8eaf0 */
+  --on-surface-variant: 168 173 189; /* #a8adbd */
+  --secondary: 154 160 176; /* #9aa0b0 — 5.9:1 */
+  --error: 248 113 113; /* #f87171 */
+  --success: 74 222 128; /* #4ade80 — 8.8:1 */
+
+  --neu-dark: 8 9 13;
+  --neu-dark-a: 0.75;
+  --neu-light: 255 255 255;
+  --neu-light-a: 0.055;
+  --neu-inset-dark-a: 0.85;
+  --neu-inset-light-a: 0.05;
+
+  --hud: 0 0 0;
+  --hairline: 255 255 255;
+}
+
 html {
   scroll-behavior: smooth;
+  /* iOS Safari inflates text in landscape unless this is set, which then
+     breaks out of the neumorphic containers. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  background-color: #e0e5ec;
-  color: #2d3748;
+  background-color: rgb(var(--surface));
+  color: rgb(var(--on-surface));
+  /* Long unbroken strings (email addresses, repo slugs, URLs) must be allowed
+     to break rather than push their container wider than the viewport. */
+  overflow-wrap: break-word;
+  /* Let the theme flip animate rather than snap, but never animate on the very
+     first paint or the page visibly loads light then jumps to dark. */
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 .neu-raised {
-  background-color: #e0e5ec;
+  background-color: rgb(var(--surface));
   box-shadow:
-    9px 9px 16px rgb(163, 177, 198, 0.6),
-    -9px -9px 16px rgba(255, 255, 255, 0.5);
+    9px 9px 16px rgb(var(--neu-dark) / var(--neu-dark-a)),
+    -9px -9px 16px rgb(var(--neu-light) / var(--neu-light-a));
+  transition:
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
 }
 
 .neu-recessed {
-  background-color: #e0e5ec;
+  background-color: rgb(var(--surface));
   box-shadow:
-    inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7),
-    inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+    inset 6px 6px 10px 0 rgb(var(--neu-dark) / var(--neu-inset-dark-a)),
+    inset -6px -6px 10px 0 rgb(var(--neu-light) / var(--neu-inset-light-a));
+  transition:
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
 }
 
 .neu-interactive:active {
   box-shadow:
-    inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7),
-    inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+    inset 6px 6px 10px 0 rgb(var(--neu-dark) / var(--neu-inset-dark-a)),
+    inset -6px -6px 10px 0 rgb(var(--neu-light) / var(--neu-inset-light-a));
   transform: translateY(2px);
 }
 
 .neu-interactive:hover {
   box-shadow:
-    12px 12px 20px rgb(163, 177, 198, 0.7),
-    -12px -12px 20px rgba(255, 255, 255, 0.6);
+    12px 12px 20px rgb(var(--neu-dark) / calc(var(--neu-dark-a) + 0.1)),
+    -12px -12px 20px rgb(var(--neu-light) / calc(var(--neu-light-a) + 0.1));
 }
 
 .reveal {
@@ -69,22 +158,102 @@ body {
 }
 
 .nav-link.active-link {
-  color: #3525cd;
+  color: rgb(var(--primary));
   font-weight: 700;
 }
 
-.neumorphic-convex {
-  box-shadow: -8px -8px 20px #ffffff, 8px 8px 20px #bebebe;
+/* Desktop nav links are a single 24px line of text — well under the 44px
+   touch minimum, and they become visible at 1024px, which iPads reach in
+   landscape. Lifting the hit area with min-height (rather than padding) keeps
+   the wordmark and the parent space-x-* rhythm exactly where they were. */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
-.neumorphic-concave {
-  box-shadow: inset -8px -8px 20px #ffffff, inset 8px 8px 20px #bebebe;
+/* Education-timeline node glow. Lives here rather than as a Tailwind arbitrary
+   value so it tracks the accent in both themes. */
+.timeline-dot {
+  box-shadow: 0 0 10px rgb(var(--primary) / 0.45);
 }
 
-.neumorphic-convex-sm {
-  box-shadow: -4px -4px 10px #ffffff, 4px 4px 10px #bebebe;
+/* Fixed navigation bar.
+   env() resolves to 0 on devices without a cutout, so max() falls back to the
+   original spacing everywhere else — this only ever adds room where it is
+   genuinely needed. */
+.nav-safe {
+  margin-top: max(1rem, env(safe-area-inset-top));
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
 }
 
-.neumorphic-concave-sm {
-  box-shadow: inset -4px -4px 10px #ffffff, inset 4px 4px 10px #bebebe;
+@media (min-width: 768px) {
+  .nav-safe {
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+  }
 }
+
+/* Landscape phones are only ~375px tall, and a full-size fixed bar would eat a
+   fifth of the viewport. Trim it, and trim the scroll offset that clears it. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .nav-safe {
+    margin-top: max(0.5rem, env(safe-area-inset-top));
+    /* 0.375rem, not 0.5rem: the brand link and burger are now a 44px touch
+       target, so 0.5rem padding would grow the bar to 60px and eat into a
+       375px-tall viewport. This keeps it at the 56px the scroll offset below
+       was tuned against. */
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .nav-safe .brand-mark {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  /* Beats the `scroll-mt-32` utility on specificity, not just source order. */
+  section.section {
+    scroll-margin-top: 5rem;
+  }
+}
+
+/* Profile photo fallback: if the image fails to load we hide it and show
+   initials in its place instead of a broken-image icon. */
+[data-fallback="AO"]::before {
+  content: "AO";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  font-size: 4rem;
+  font-weight: 700;
+  color: rgb(var(--primary));
+  letter-spacing: 0.05em;
+}
+
+/* Honour the OS "reduce motion" setting: the site relies on scroll reveals,
+   hover lifts, transforms and a scroll-driven timeline, all of which should
+   collapse to an instant, static result when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
