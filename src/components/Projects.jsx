@@ -305,9 +305,22 @@ function ProjectVisual({ project, featured, wide, index }) {
   );
 }
 
-function DemoNotice({ project, onClose }) {
-  const titleId = `${project.id}-demo-title`;
-  const descriptionId = `${project.id}-demo-description`;
+function UnavailableNotice({ project, variant, onClose }) {
+  const titleId = `${project.id}-${variant}-title`;
+  const descriptionId = `${project.id}-${variant}-description`;
+  const isDemo = variant === "demo";
+
+  // variant "demo" → a live demo link does not exist yet.
+  // variant "github" → the source code is not public yet.
+  const title = isDemo
+    ? "Live demo isn’t ready yet"
+    : "Source code isn’t public yet";
+  const message = isDemo
+    ? `Thanks for your interest in ${project.title}! The live demo is still being worked on and isn’t available for preview right now. We’ll share it right here once it’s ready to try.`
+    : `Thanks for your interest in ${project.title}! The source code isn’t on GitHub right now. We’ll publish it right here once it’s ready to share.`;
+
+  const alternative = isDemo ? project.githubUrl : project.demoUrl;
+  const alternativeLabel = isDemo ? "View GitHub" : "Open Live Demo";
 
   return createPortal(
     <div
@@ -328,41 +341,50 @@ function DemoNotice({ project, onClose }) {
       >
         <div className="flex items-start justify-between gap-4">
           <div className="neu-recessed flex h-14 w-14 items-center justify-center rounded-2xl text-primary">
-            <span className="material-symbols-outlined text-3xl">construction</span>
+            {isDemo ? (
+              <span className="material-symbols-outlined text-3xl">construction</span>
+            ) : (
+              <GitHubIcon className="h-7 w-7" />
+            )}
           </div>
           <button
             className="neu-raised neu-interactive flex h-10 w-10 items-center justify-center rounded-full text-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             type="button"
             onClick={onClose}
-            aria-label="Close live demo notice"
+            aria-label="Close notice"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
 
         <h3 id={titleId} className="mt-6 text-2xl font-bold text-on-surface">
-          Live demo coming soon
+          {title}
         </h3>
         <p id={descriptionId} className="mt-3 text-sm leading-6 text-on-surface-variant">
-          We’re currently working on {project.title} and preparing a live demo. It isn’t
-          available yet, but we’ll share it here as soon as it’s ready.
+          {message}
         </p>
         <p className="mt-3 text-sm leading-6 text-on-surface-variant">
-          {project.githubUrl
-            ? "You can explore the source code on GitHub in the meantime."
-            : "We’ll share updates here when the project is ready to preview."}
+          {alternative
+            ? isDemo
+              ? "In the meantime, you can explore the source code on GitHub."
+              : "In the meantime, you’re welcome to try the live demo."
+            : "Thanks for your patience — we’ll share it right here once it’s ready."}
         </p>
 
         <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          {project.githubUrl && (
+          {alternative && (
             <a
               className={`${ACTION_BASE_CLASS} neu-raised neu-interactive text-primary`}
-              href={project.githubUrl}
+              href={alternative}
               target="_blank"
               rel="noreferrer"
             >
-              <GitHubIcon className="h-4 w-4" />
-              View GitHub
+              {isDemo ? (
+                <GitHubIcon className="h-4 w-4" />
+              ) : (
+                <span className="material-symbols-outlined text-base">open_in_new</span>
+              )}
+              {alternativeLabel}
             </a>
           )}
           <button
@@ -381,17 +403,18 @@ function DemoNotice({ project, onClose }) {
 }
 
 function ProjectActions({ project }) {
-  const [showDemoNotice, setShowDemoNotice] = useState(false);
+  // "demo" | "github" | null — which unavailable-resource notice is open.
+  const [unavailableContext, setUnavailableContext] = useState(null);
 
   useEffect(() => {
-    if (!showDemoNotice) {
+    if (!unavailableContext) {
       return undefined;
     }
 
     const previousOverflow = document.body.style.overflow;
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        setShowDemoNotice(false);
+        setUnavailableContext(null);
       }
     };
 
@@ -402,7 +425,7 @@ function ProjectActions({ project }) {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showDemoNotice]);
+  }, [unavailableContext]);
 
   return (
     <>
@@ -421,19 +444,14 @@ function ProjectActions({ project }) {
           </a>
         ) : (
           <button
-            className={`${ACTION_BASE_CLASS} neu-recessed cursor-not-allowed text-secondary`}
+            className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
             type="button"
-            disabled
-            title="A public GitHub repository is not available for this project"
+            onClick={() => setUnavailableContext("github")}
+            aria-haspopup="dialog"
+            aria-label={`${project.title} GitHub repository not available — learn more`}
           >
             <GitHubIcon className="h-4 w-4" />
             GitHub
-            {/* The disabled state is carried by the recessed shadow, the
-                not-allowed cursor and this chip — not by fading the label out,
-                which made it unreadable rather than merely inactive. */}
-            <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[11px] uppercase tracking-wider text-secondary">
-              Soon
-            </span>
           </button>
         )}
 
@@ -452,20 +470,22 @@ function ProjectActions({ project }) {
           <button
             className={`${ACTION_BASE_CLASS} neu-recessed neu-interactive text-on-surface`}
             type="button"
-            onClick={() => setShowDemoNotice(true)}
+            onClick={() => setUnavailableContext("demo")}
             aria-haspopup="dialog"
+            aria-label={`${project.title} live demo not available — learn more`}
           >
             <span className="material-symbols-outlined text-base">visibility</span>
             Live Demo
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] uppercase tracking-wider text-primary">
-              Soon
-            </span>
           </button>
         )}
       </div>
 
-      {showDemoNotice && (
-        <DemoNotice project={project} onClose={() => setShowDemoNotice(false)} />
+      {unavailableContext && (
+        <UnavailableNotice
+          project={project}
+          variant={unavailableContext}
+          onClose={() => setUnavailableContext(null)}
+        />
       )}
     </>
   );

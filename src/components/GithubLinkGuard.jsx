@@ -151,7 +151,7 @@ function ResultDialog({ run, onClose, onRecheck, isChecking }) {
           {isClean
             ? "Every repository link in the project data resolves to a public repository, so visitors will be able to open all of them."
             : blockedCount > 0
-              ? "A visitor clicking these buttons would land on a GitHub 404. Either make the repository public, fix the URL, or set githubUrl to null so the card shows its “GitHub / Soon” state instead."
+              ? "A visitor clicking these buttons would land on a GitHub 404. Either make the repository public, fix the URL, or set githubUrl to null so the card shows its polite “not public yet” notice instead."
               : "GitHub would not answer these requests, so nothing is known about whether the repositories are public. This is not a warning about your projects — re-run the check once the rate limit resets."}
         </p>
 
