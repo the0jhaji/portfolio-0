@@ -317,7 +317,7 @@ function UnavailableNotice({ project, variant, onClose }) {
     : "Source code isn’t public yet";
   const message = isDemo
     ? `Thanks for your interest in ${project.title}! The live demo is still being worked on and isn’t available for preview right now. We’ll share it right here once it’s ready to try.`
-    : `Thanks for your interest in ${project.title}! The source code isn’t on GitHub right now. We’ll publish it right here once it’s ready to share.`;
+    : `Thanks for your interest in ${project.title}! The source code for this project is not public yet. We’ll share it right here once it’s ready.`;
 
   const alternative = isDemo ? project.githubUrl : project.demoUrl;
   const alternativeLabel = isDemo ? "View GitHub" : "Open Live Demo";
