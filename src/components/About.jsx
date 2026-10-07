@@ -1,9 +1,4 @@
-const stats = [
-  { value: "100+", label: "DSA Problems" },
-  { value: "15+", label: "Projects Built" },
-  { value: "7.2", label: "CGPA" },
-  { value: "4+", label: "Certifications" },
-];
+import QuickStats from "./QuickStats";
 
 const timeline = [
   {
@@ -45,26 +40,7 @@ export default function About() {
             functional, but maintainable and scalable.
           </p>
 
-          <div className="neu-recessed rounded-2xl p-6 mt-4">
-            <h3 className="font-bold text-on-surface mb-4">Quick Stats</h3>
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex min-w-0 flex-col items-center text-center p-2"
-                >
-                  <p className="text-3xl font-bold text-primary">{stat.value}</p>
-                  {/* "Certifications" is one unbreakable word. It needs w-full
-                      as well as break-words: as a flex item its default
-                      min-width:auto is its min-content width, so break-words
-                      alone never gets a chance to fire. */}
-                  <p className="mt-1 w-full break-words text-xs font-medium uppercase tracking-wide text-secondary">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <QuickStats />
         </div>
 
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 content-start">
