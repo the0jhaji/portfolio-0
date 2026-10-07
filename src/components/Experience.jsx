@@ -9,8 +9,10 @@ const experiences = [
     organization: "InAmigos Foundation",
     location: "Bilaspur, Chhattisgarh · Remote",
     startDate: "2026-09-27",
-    // null means the role is current.
-    endDate: null,
+    // Completes at the END of Oct 11, 2026. The card keeps showing "Ongoing"
+    // (and "Present") while this date is still ahead, then flips to the final
+    // period and drops the active-role badge on its own — no further edits.
+    endDate: "2026-10-11",
     icon: "terminal",
     summary:
       "Contributing to the Foundation's web presence as part of its Project VIKAS skill-development track — building and maintaining features for an NGO-driven platform and supporting it with responsive, accessible front-end work.",
@@ -25,6 +27,19 @@ const experiences = [
 ];
 
 const MS_PER_DAY = 86_400_000;
+
+// A role counts as active while it has no endDate, AND while its endDate is
+// still in the future — the date can be filled in ahead of the last day and
+// "Ongoing" flips to the final period automatically once it has passed.
+// The end date is honoured through the END of that day (local time).
+function isRoleActive(experience) {
+  if (!experience.endDate) return true;
+
+  const [year, month, day] = experience.endDate.split("-").map(Number);
+  if (!year || !month || !day) return true; // unparseable → treat as current
+
+  return Date.now() < new Date(year, month - 1, day + 1).getTime();
+}
 
 function monthsBetween(startDate, endDate) {
   const start = new Date(startDate);
@@ -84,8 +99,11 @@ function formatPeriod(startDate, endDate) {
 
 function ExperienceCard({ experience, defaultOpen = true }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const isOngoing = !experience.endDate;
-  const duration = formatDuration(experience.startDate, experience.endDate);
+  const isOngoing = isRoleActive(experience);
+  // While the role is still running, count duration/period up to *now*; only
+  // after the end date passes is the final endDate shown.
+  const visibleEndDate = isOngoing ? null : experience.endDate;
+  const duration = formatDuration(experience.startDate, visibleEndDate);
   const panelId = `experience-panel-${experience.id}`;
   const toggleId = `experience-toggle-${experience.id}`;
 
@@ -124,7 +142,7 @@ function ExperienceCard({ experience, defaultOpen = true }) {
               </span>
             )}
             <span className="rounded-full bg-secondary/10 px-3 py-1.5 font-label-mono text-xs font-medium text-secondary">
-              {formatPeriod(experience.startDate, experience.endDate)}
+              {formatPeriod(experience.startDate, visibleEndDate)}
             </span>
             {duration && (
               <span className="w-max rounded-full bg-secondary/10 px-3 py-1.5 font-label-mono text-xs font-medium text-secondary">
@@ -244,7 +262,7 @@ export default function Experience() {
     };
   }, []);
 
-  const activeCount = experiences.filter((experience) => !experience.endDate).length;
+  const activeCount = experiences.filter(isRoleActive).length;
 
   return (
     <section className="section scroll-mt-32" id="experience" ref={sectionRef}>
