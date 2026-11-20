@@ -12,6 +12,9 @@ describe("Certificates", () => {
     expect(formatCertificateTitle("roboRush-2025.jpg")).toBe("Robo Rush 2025");
     expect(formatCertificateTitle("sih2026.jpeg")).toBe("SIH 2026");
     expect(formatCertificateTitle("coding_waters-2024.png")).toBe("Coding Waters 2024");
+    expect(formatCertificateTitle("inamigos-ai-web-development-internship-2026.png")).toBe(
+      "Inamigos AI Web Development Internship 2026",
+    );
   });
 
   it("includes the Campus Ambassador achievement", () => {
@@ -33,8 +36,13 @@ describe("Certificates", () => {
     render(<Certificates />);
 
     const cards = screen.getAllByRole("button", { name: /^View .* certificate$/ });
-    expect(cards).toHaveLength(5);
+    expect(cards).toHaveLength(6);
     expect(screen.getByRole("button", { name: "View SIH 2026 certificate" })).toBeTruthy();
+    expect(
+      screen.getByRole("button", {
+        name: "View Inamigos AI Web Development Internship 2026 certificate",
+      }),
+    ).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "View Aavahan 2025 certificate" }));
     expect(screen.getByRole("dialog", { name: "Aavahan 2025 certificate preview" })).toBeTruthy();

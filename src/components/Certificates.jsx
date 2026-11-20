@@ -11,6 +11,7 @@ const imageExtensions = new Set([
   ".svg",
   ".webp",
 ]);
+const acronyms = new Set(["ai", "iit", "ml", "sih"]);
 
 export function formatCertificateTitle(filename) {
   const title = filename
@@ -24,7 +25,9 @@ export function formatCertificateTitle(filename) {
   return title
     .split(/\s+/)
     .map((word) => {
-      if (/^[a-z]{2,3}$/i.test(word)) return word.toUpperCase();
+      if (acronyms.has(word.toLowerCase()) || /^[A-Z]{2,}$/.test(word)) {
+        return word.toUpperCase();
+      }
       return `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
     })
     .join(" ");
