@@ -5,6 +5,7 @@ import Experience from "../components/Experience";
 import Skills from "../components/Skills";
 import CodingProfiles from "../components/CodingProfiles";
 import Projects from "../components/Projects";
+import Certificates from "../components/Certificates";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { useScrollReveal, useActiveSection } from "../hooks/useReveal";
@@ -29,6 +30,7 @@ export default function Home() {
         <Skills />
         <CodingProfiles />
         <Projects />
+        <Certificates />
         <Contact />
       </main>
 
